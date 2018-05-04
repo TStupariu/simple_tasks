@@ -1,0 +1,10 @@
+#root .container-fluid .floating-fixed-button {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	margin: 20px;
+}
+
+.list-row {
+	margin-top: 30px;
+}
