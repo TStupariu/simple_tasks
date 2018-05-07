@@ -5,21 +5,37 @@ import Home from './components/Home'
 import Settings from './components/Settings'
 import LogIn from './components/LogIn'
 
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import { isAuthenticated } from './services/auth'
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      isAuthenticated() ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { from: props.location }
+          }}
+        />
+      )
+    }
+  />
+);
 
 class App extends Component {
-  componentDidMount() {
-  }
-
   render() {
     return (
       <Switch>
-        <Route exact path='/' component={Home}/>
-        <Route exact path='/home' component={Home}/>
-        <Route path='/settings' component={Settings}/>
-        <Route path='/login' component={LogIn}/>
+        <PrivateRoute exact path='/' component={Home} />
+        <PrivateRoute exact path='/home' component={Home} />
+        <PrivateRoute path='/settings' component={Settings} />
+        <Route path='/login' component={LogIn} />
       </Switch>
-      );
+    );
   }
 }
 

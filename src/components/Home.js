@@ -9,6 +9,8 @@ import Slide from 'material-ui/transitions/Slide';
 import AddTask from './AddTask'
 import TaskList from './TaskList'
 
+import { signout } from '../services/auth'
+
 import './Home.css'
 
 class Home extends Component {
@@ -19,12 +21,25 @@ class Home extends Component {
 		}
 	}
 
+	componentDidMount() {
+		document.addEventListener("keydown", (e) => {
+			if (e.ctrlKey && e.keyCode === 65) {
+      	this.handleOpenModal()
+      }
+    });
+	}
+
 	handleOpenModal() {
 		this.setState({modalOpen: true})
 	}
 
 	handleCloseModal() {
 		this.setState({modalOpen: false})
+	}
+
+	handleSignOut() {
+		signout()
+		this.props.history.push('/login')
 	}
 
 	closeModalCallback = (closeEvent) => {
@@ -35,24 +50,29 @@ class Home extends Component {
 
 	render() {
 		return (
+		<div>
 			<Grid fluid>
-        <Row className="list-row">
-        	<Col md={8} mdOffset={2} xs={12}>
-        		<Paper elecation={4}>
-        			<TaskList/>
-        		</Paper>
-        	</Col>
-        </Row>
-      	<Button variant="fab" color="primary" aria-label="add" className="floating-fixed-button" onClick={() => {this.handleOpenModal()}}>
-      	  <Icon>add</Icon>
-      	</Button>
-        <div>
+				<Row className="list-row">
+					<Col md={8} mdOffset={2} xs={12}>
+						<Paper elecation={4}>
+							<TaskList/>
+						</Paper>
+					</Col>
+				</Row>
+				<div>
 					<Slide direction="left" in={this.state.modalOpen} mountOnEnter unmountOnExit>
 						<AddTask closeModal={this.closeModalCallback}/> 
 					</Slide> 
-        </div>
-      </Grid>
-			);
+				</div>
+			</Grid>
+			<div className="floating-bottom">
+				<Button variant="raised" color="secondary" className="fixed-button" onClick={() => {this.handleSignOut()}}>Sign out</Button>						
+				<Button variant="fab" color="primary" aria-label="add" className="fixed-button" onClick={() => {this.handleOpenModal()}}>
+					<Icon>add</Icon>
+				</Button>
+			</div>
+		</div>
+		);
 	}
 }
 

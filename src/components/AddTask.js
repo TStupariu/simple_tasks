@@ -14,7 +14,7 @@ class AddTask extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			task: ''
+			task: '',
 		}
 	}
 
@@ -30,13 +30,24 @@ class AddTask extends Component {
 		this.props.closeModal(true)
 	}
 
+	handleEnterAdd(event) {
+		switch(event.keyCode) {
+			case 13:
+				this.handleAddTask();
+				break;	
+			case 27:
+				this.closeModal();
+				break;
+		}
+	}
+
 	render() {
 		return (
 			<div className="main-window">
 				<Card>
 					<CardContent>
 						<h3>Add a task...</h3>
-						<Input id="task" value={this.state.task} onChange={(event) => this.setState({task: event.target.value})} />
+						<Input id="task" value={this.state.task} onKeyUp={(event) => {this.handleEnterAdd(event)}} onChange={(event) => this.setState({task: event.target.value})} autoFocus/>
 					</CardContent>
 					<CardActions>
 						<Button size="small" color='primary' variant='raised' onClick={() => {this.handleAddTask()}}>Add</Button>

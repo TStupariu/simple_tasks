@@ -1,10 +1,25 @@
-#root .container-fluid .floating-fixed-button {
+.floating-bottom {
+	width: 100vw;
 	position: fixed;
 	bottom: 0;
-	right: 0;
+	background-color: #fff;
+	display: flex;
+	justify-content: space-between;
+}
+
+.floating-bottom .fixed-button {
 	margin: 20px;
 }
 
 .list-row {
 	margin-top: 30px;
+}
+
+.hr-fade {
+	border: 0;
+	height: 1px;
+	background: #333;
+	background-image: -webkit-linear-gradient(left, #fff, #333, #fff);
+	background-image: -o-linear-gradient(left, #fff, #333, #fff);
+	background-image: linear-gradient(to right, #fff, #333, #fff);
 }

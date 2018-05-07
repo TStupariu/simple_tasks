@@ -18,6 +18,11 @@ export const login = async (email, pass) => {
 	}
 }
 
+export const signout = async () => {
+	localStorage.removeItem('auth_token')
+	return await auth.signOut()	
+}
+
 export const setToken = (token) => {
 	localStorage.setItem('auth_token', JSON.stringify(token))
 }
@@ -29,4 +34,9 @@ export const getToken = () => {
 export const getUid = () => {
 	const token = getToken()
 	return token.uid
+}
+
+export const isAuthenticated = () => {
+	const token = getToken()
+	return token !== null
 }
