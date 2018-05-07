@@ -26,8 +26,21 @@ class AddTask extends Component {
 		const task = this.state.task
 		if (task) {
 			addTask(task)
+			this.notifyOnAdd(task)
 		}
 		this.props.closeModal(true)
+	}
+
+	notifyOnAdd(task) {
+		navigator.serviceWorker.register('sw.js');
+		if (Notification.permission === 'granted') {
+			var notification = new Notification(task);
+		}
+		else if (Notification.permission !== 'denied') {
+			Notification.requestPermission(function (permission) {
+					var notification = new Notification(task);
+			});
+		}
 	}
 
 	handleEnterAdd(event) {

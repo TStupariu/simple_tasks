@@ -23,3 +23,7 @@
 	background-image: -o-linear-gradient(left, #fff, #333, #fff);
 	background-image: linear-gradient(to right, #fff, #333, #fff);
 }
+
+.offset-bottom {
+	padding-bottom: 120px;
+}

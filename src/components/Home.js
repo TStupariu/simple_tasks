@@ -51,7 +51,7 @@ class Home extends Component {
 	render() {
 		return (
 		<div>
-			<Grid fluid>
+			<Grid fluid className="offset-bottom">
 				<Row className="list-row">
 					<Col md={8} mdOffset={2} xs={12}>
 						<Paper elecation={4}>
