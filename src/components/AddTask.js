@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-flexbox-grid';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
-import Input, { InputLabel } from 'material-ui/Input';
+import Input from 'material-ui/Input';
 
-import { auth } from '../services/auth'
 import { addTask } from '../services/task'
 
 import './AddTask.css'
@@ -15,6 +13,7 @@ class AddTask extends Component {
 		super(props)
 		this.state = {
 			task: '',
+			open: true
 		}
 	}
 
@@ -34,11 +33,11 @@ class AddTask extends Component {
 	notifyOnAdd(task) {
 		navigator.serviceWorker.register('sw.js');
 		if (Notification.permission === 'granted') {
-			var notification = new Notification(task);
+			new Notification(task);
 		}
 		else if (Notification.permission !== 'denied') {
 			Notification.requestPermission(function (permission) {
-					var notification = new Notification(task);
+				new Notification(task);
 			});
 		}
 	}

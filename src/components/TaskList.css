@@ -3,6 +3,18 @@
 	padding-right: 64px;
 }
 
+.action {
+	margin-right: 10px;
+}
+
 .done-action {
 	color: green;
+}
+
+.delete-action {
+	color: red;
+}
+
+.loadingImage {
+	width: 100%;
 }

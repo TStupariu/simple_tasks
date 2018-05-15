@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 
-import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction, ListItemAction } from 'material-ui/List';
-import Button from 'material-ui/Button';
+import List, { ListItem, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
 import Icon from 'material-ui/Icon';
 
 import { db } from '../firebase'
 import { getUid } from '../services/auth'
-import { setAsDone } from '../services/task'
+import { setAsDone, deleteTask } from '../services/task'
 
 import './TaskList.css'
 
@@ -21,7 +20,6 @@ class TaskList extends Component {
 	componentDidMount() {
 		const uid = getUid()
 		db.ref(`/users/${uid}/tasks/wip`).on('value', (snap) => {
-			const snapshot = snap.val()
 			const tasks = Object.keys(snap.val() || {}).map(k => {
 				return {key: k, item: snap.val()[k]}
 			});
@@ -31,6 +29,12 @@ class TaskList extends Component {
 
 	handleDone(task) {
 		setAsDone(task)
+	}
+
+	handleDelete(task) {
+		if (window.confirm('Are you sure you want to delete?')) {
+	  	deleteTask(task)
+	  }
 	}
 
 	render() {
@@ -44,15 +48,16 @@ class TaskList extends Component {
 							return (
 								<ListItem button key={el.key}>
       		  		  <ListItemText primary={el.item.title} classes={{root: 'text-overflow'}}/>
-      		  		  <ListItemSecondaryAction onClick={() => {this.handleDone(el)}}>
-										<Icon className="done-action">done</Icon>
+      		  		  <ListItemSecondaryAction>
+										<Icon className="action delete-action" onClick={() => {this.handleDelete(el)}}>delete</Icon>
+										<Icon className="action done-action" onClick={() => {this.handleDone(el)}}>done</Icon>
               		</ListItemSecondaryAction>
       		  		</ListItem>
 								)
 						})
 					}
       		</List> :
-      		null
+					<img src='./loading.gif' className='loadingImage'/>
 				}
     	</div>
 			);
