@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Input from 'material-ui/Input';
+import Switch from 'material-ui/Switch';
+import { InputLabel } from 'material-ui/Input';
+import Divider from 'material-ui/Divider';
 
 import { addTask } from '../services/task'
 
@@ -13,7 +16,8 @@ class AddTask extends Component {
 		super(props)
 		this.state = {
 			task: '',
-			open: true
+			open: true,
+			sendNotification: false
 		}
 	}
 
@@ -25,7 +29,8 @@ class AddTask extends Component {
 		const task = this.state.task
 		if (task) {
 			addTask(task)
-			this.notifyOnAdd(task)
+			if (this.state.sendNotification)
+				this.notifyOnAdd(task)
 		}
 		this.props.closeModal(true)
 	}
@@ -60,10 +65,20 @@ class AddTask extends Component {
 					<CardContent>
 						<h3>Add a task...</h3>
 						<Input id="task" value={this.state.task} onKeyUp={(event) => {this.handleEnterAdd(event)}} onChange={(event) => this.setState({task: event.target.value})} autoFocus/>
+						<br/>
+						<div className='margin-top'>
+							<InputLabel>Notification</InputLabel>
+							<Switch
+        			  checked={this.state.sendNotification}
+        			  onChange={() => this.setState({sendNotification: !this.state.sendNotification})}
+        			  value="sendNotification"
+        			/>
+        		</div>
 					</CardContent>
 					<CardActions>
-						<Button size="small" color='primary' variant='raised' onClick={() => {this.handleAddTask()}}>Add</Button>
-						<Button size="small" color='secondary' variant='raised' onClick={() => {this.closeModal()}}>Cancel</Button>
+        		<Divider />
+						<Button className='button-width' size="small" color='primary' variant='raised' onClick={() => {this.handleAddTask()}}>Add</Button>
+						<Button className='button-width' size="small" color='secondary' variant='raised' onClick={() => {this.closeModal()}}>Cancel</Button>
 					</CardActions>
 				</Card>
 			</div>

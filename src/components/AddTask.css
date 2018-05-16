@@ -1,5 +1,17 @@
 .main-window {
 	position: fixed;
 	bottom: 100px;
-	right: 80px;
+	right: 5vw;
+}
+
+.margin-top {
+	margin-top: 20px;
+}
+
+#task {
+	min-width: 80vw;
+}
+
+.button-width {
+	width: 50%;
 }
