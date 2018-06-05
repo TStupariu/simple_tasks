@@ -16,3 +16,8 @@ export const deleteTask = (task) => {
 	const uid = getUid()
 	db.ref(`/users/${uid}/tasks/wip`).child(task.key).remove()
 }
+
+export const editTaskName = (taskId, title) => {
+	const uid = getUid()
+	db.ref(`/users/${uid}/tasks/wip/${taskId}`).set({title: title})
+}

@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 
 import List, { ListItem, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
+import TextField from 'material-ui/TextField';
+import Button from 'material-ui/Button';
+import Slide from 'material-ui/transitions/Slide';
+
 import Icon from 'material-ui/Icon';
 
 import { db } from '../firebase'
 import { getUid } from '../services/auth'
 import { setAsDone, deleteTask } from '../services/task'
+
+import EditTask from './EditTask'
 
 import './TaskList.css'
 
@@ -13,7 +19,9 @@ class TaskList extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			tasks: []
+			tasks: [],
+			editModalOpen: false,
+			taskToEdit: null
 		}
 	}
 
@@ -33,33 +41,46 @@ class TaskList extends Component {
 
 	handleDelete(task) {
 		if (window.confirm('Are you sure you want to delete?')) {
-	  	deleteTask(task)
-	  }
+			deleteTask(task)
+		}
+	}
+
+	handleEdit(task) {
+		this.setState({editModalOpen: true, taskToEdit: task})
+	}
+
+	handleCloseModal() {
+		this.setState({editModalOpen: false})
 	}
 
 	render() {
 		return (
 			<div>
+			{
+				this.state.tasks.length > 0 ?
+				<List component="nav">
 				{
-					this.state.tasks.length > 0 ?
-					<List component="nav">
-					{
-						this.state.tasks.map((el, idx) => {
-							return (
-								<ListItem button key={el.key}>
-      		  		  <ListItemText primary={el.item.title} classes={{root: 'text-overflow'}}/>
-      		  		  <ListItemSecondaryAction>
-										<Icon className="action delete-action" onClick={() => {this.handleDelete(el)}}>delete</Icon>
-										<Icon className="action done-action" onClick={() => {this.handleDone(el)}}>done</Icon>
-              		</ListItemSecondaryAction>
-      		  		</ListItem>
-								)
-						})
-					}
-      		</List> :
-					<img src='./loading.gif' className='loadingImage'/>
+					this.state.tasks.map((el, idx) => {
+						return (
+							<ListItem button key={el.key} onClick={() => {this.handleEdit(el)}}>
+								<ListItemText primary={el.item.title} classes={{root: 'text-overflow'}}/>
+								<ListItemSecondaryAction>
+									<Icon className="action delete-action" onClick={() => {this.handleDelete(el)}}>delete</Icon>
+									<Icon className="action done-action" onClick={() => {this.handleDone(el)}}>done</Icon>
+								</ListItemSecondaryAction>
+							</ListItem>
+							)
+					})
 				}
-    	</div>
+				</List> :
+				<img src='./loading.gif' className='loadingImage'/>
+			}
+			<div>
+				<Slide direction="left" in={this.state.editModalOpen} mountOnEnter unmountOnExit>
+					<EditTask task={this.state.taskToEdit} closeModal={() => {this.handleCloseModal()}}/> 
+				</Slide> 
+			</div>
+			</div>
 			);
 	}
 }
