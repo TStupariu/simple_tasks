@@ -1,6 +1,6 @@
 .text-overflow {
 	overflow: hidden;
-	padding-right: 64px;
+	margin-right: 60px;
 }
 
 .action {
@@ -16,5 +16,21 @@
 }
 
 .loadingImage {
-	width: 100%;
+	display: block;
+	margin: auto;
+	height: 50%;
+	width: 50%;
+}
+
+.no-tasks img {
+	display: block;
+	margin: auto;
+	height: 50%;
+	width: 50%;
+}
+
+.no-tasks p {
+	display: block;
+	margin: auto;
+	text-align: center;
 }
