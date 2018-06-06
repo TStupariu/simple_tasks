@@ -62,8 +62,8 @@ class TaskList extends Component {
 				{
 					this.state.tasks.map((el, idx) => {
 						return (
-							<ListItem button key={el.key} onClick={() => {this.handleEdit(el)}}>
-								<ListItemText primary={el.item.title} classes={{root: 'text-overflow'}}/>
+							<ListItem button key={el.key}>
+								<ListItemText primary={el.item.title} classes={{root: 'text-overflow'}} onClick={() => {this.handleEdit(el)}}/>
 								<ListItemSecondaryAction>
 									<Icon className="action delete-action" onClick={() => {this.handleDelete(el)}}>delete</Icon>
 									<Icon className="action done-action" onClick={() => {this.handleDone(el)}}>done</Icon>
