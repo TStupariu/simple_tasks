@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import List, { ListItem, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import Slide from 'material-ui/transitions/Slide';
@@ -21,7 +22,8 @@ class TaskList extends Component {
 		this.state = {
 			tasks: [],
 			editModalOpen: false,
-			taskToEdit: null
+			taskToEdit: null,
+			isLoading: true
 		}
 	}
 
@@ -31,7 +33,7 @@ class TaskList extends Component {
 			const tasks = Object.keys(snap.val() || {}).map(k => {
 				return {key: k, item: snap.val()[k]}
 			});
-			this.setState({tasks})
+			this.setState({tasks: tasks, isLoading: false})
 		})
 	}
 
@@ -57,7 +59,7 @@ class TaskList extends Component {
 		return (
 			<div>
 			{
-				this.state.tasks.length > 0 ?
+				!this.state.isLoading && this.state.tasks.length > 0 ?
 				<List component="nav">
 				{
 					this.state.tasks.map((el, idx) => {
@@ -68,12 +70,18 @@ class TaskList extends Component {
 									<Icon className="action delete-action" onClick={() => {this.handleDelete(el)}}>delete</Icon>
 									<Icon className="action done-action" onClick={() => {this.handleDone(el)}}>done</Icon>
 								</ListItemSecondaryAction>
+								<hr />
 							</ListItem>
 							)
 					})
 				}
 				</List> :
-				<img src='./loading.gif' className='loadingImage'/>
+					this.state.isLoading ?
+					<img src='./loading.gif' className='loadingImage'/> :
+					<div  className="no-tasks">
+						<img src='./2.png'/>
+						<p>No pending tasks</p>
+					</div>
 			}
 			<div>
 				<Slide direction="left" in={this.state.editModalOpen} mountOnEnter unmountOnExit>
